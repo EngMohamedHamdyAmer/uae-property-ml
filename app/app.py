@@ -4,20 +4,27 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pickle
+import os
 
-@st.cache_resource
+BASE_DIR = os.path.dirname(__file__)
+
+data_path = os.path.join(BASE_DIR, "..", "data", "Clean_data.csv")
+model_path = os.path.join(BASE_DIR, "..", "models", "model.pkl")
+columns_path = os.path.join(BASE_DIR, "..", "models", "model_columns.pkl")
+
+@st.cache_data
 def load_model():
-    with open('model.pkl' , 'rb') as f :
+    with open(model_path , 'rb') as f :
         model = pickle.load(f)
     
-    with open('model_columns.pkl' , 'rb') as f :
+    with open(columns_path , 'rb') as f :
         columns = pickle.load(f)
 
     return model , columns
 
 @st.cache_resource
 def load_data():
-    return pd.read_csv('Clean_data.csv')
+    return pd.read_csv(data_path)
 
 model , model_columns = load_model()
 df = load_data()
